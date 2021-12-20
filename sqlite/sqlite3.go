@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func checkErr(err error) {
@@ -14,14 +14,14 @@ func checkErr(err error) {
 }
 
 func main() {
-	db, err := sql.Open("mysql", "mariadb:mariadb@tcp(localhost:3306)/test?charset=utf8")
+	db, err := sql.Open("sqlite3", "./foo.db")
 	checkErr(err)
 
 	// insert
-	stmt, err := db.Prepare("INSERT INTO userinfo SET username=?,department=?,created=?")
+	stmt, err := db.Prepare("INSERT INTO userinfo(username, department, created) values(?,?,?)")
 	checkErr(err)
 
-	res, err := stmt.Exec("mariadb", "研发部门", "2021-12-20")
+	res, err := stmt.Exec("sqlite3", "研发部门", "2021-12-20")
 	checkErr(err)
 
 	id, err := res.LastInsertId()
@@ -33,7 +33,7 @@ func main() {
 	stmt, err = db.Prepare("update userinfo set username=? where uid=?")
 	checkErr(err)
 
-	res, err = stmt.Exec("mariadbupdate", id)
+	res, err = stmt.Exec("sqlite3update", id)
 	checkErr(err)
 
 	affect, err := res.RowsAffected()
