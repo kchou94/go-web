@@ -15,7 +15,7 @@ type User struct {
 
 func init() {
 	// set default database
-	orm.RegisterDataBase("default", "mysql", "root:root@/my_db?charset=utf8", 30)
+	orm.RegisterDataBase("default", "mysql", "mariadb:mariadb@tcp(localhost:3306)/test?charset=utf8", 30)
 
 	// register model
 	orm.RegisterModel(new(User))
